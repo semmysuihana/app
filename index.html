@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Have Been Hacked</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            color: red;
+        }
+        #message {
+            text-align: center;
+            font-size: 2em;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to {
+                visibility: hidden;
+            }
+            50% {
+                visibility: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="message">Kamu kena hack!</div>
+    <script>
+        document.body.addEventListener('click', () => {
+            document.getElementById('message').textContent = 'Just kidding, you are safe!';
+            document.body.style.backgroundColor = 'white';
+            document.body.style.color = 'black';
+        });
+    </script>
+</body>
+</html>
