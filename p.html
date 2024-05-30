@@ -15,9 +15,26 @@
             background-color: black;
             color: red;
         }
+                #message {
+            text-align: center;
+            font-size: 2em;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to {
+                visibility: hidden;
+            }
+            50% {
+                visibility: visible;
+            }
+        }
+        p{
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div id="message">hehehehhe</div>
+    <a href="https://semmysuihana.github.io/app/" class="p" id="message">Link</a>
 </body>
 </html>
