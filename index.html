@@ -28,11 +28,14 @@
                 visibility: visible;
             }
         }
+                p{
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div id="message">Kamu kena hack!</div>
-    <a href="https://semmysuihana.github.io/app/p.html">Link</a>
+     <a href="https://semmysuihana.github.io/app/p.html" class="p" id="message">Link</a>
     <script>
         document.body.addEventListener('click', () => {
             document.getElementById('message').textContent = 'Just kidding, you are safe!';
