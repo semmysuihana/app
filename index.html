@@ -40,7 +40,7 @@
         </div>
         <div class="row mt-2">
             <div class="col-md-6 offset-md-3">
-                <button id="accelerateBtn" class="btn btn-secondary btn-block" onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>
+                <button id="accelerateBtn" class="btn btn-secondary btn-block">ACCELERATE</button>
             </div>
         </div>
         <div class="row mt-2">
@@ -150,11 +150,26 @@ document.addEventListener('keyup', function(event) {
     }
 });
 
+document.getElementById('accelerateBtn').addEventListener('mousedown', function() {
+    accelerate(-0.2);
+});
+document.getElementById('accelerateBtn').addEventListener('mouseup', function() {
+    accelerate(0.05);
+});
+
+document.getElementById('accelerateBtn').addEventListener('touchstart', function() {
+    accelerate(-0.2);
+});
+document.getElementById('accelerateBtn').addEventListener('touchend', function() {
+    accelerate(0.05);
+});
+
 function accelerate(n) {
     if (accelerating) {
         myGamePiece.gravity = n;
     }
 }
+
 var myGamePiece;
 var myObstacles = [];
 var myScore;
