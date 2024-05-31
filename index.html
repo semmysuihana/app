@@ -2,26 +2,180 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+    body {
+        padding: 20px;
+        text-align: center;
+        margin: 0;
+    }
+
+    canvas {
+        border: 1px solid #000;
+        display: block;
+        margin: auto;
+    }
+
+    button {
+        font-size: 20px;
+    }
 </style>
 </head>
-<body onload="startGame()">
-<script>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <canvas></canvas>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <button id="startButton" class="btn btn-primary btn-block" onclick="startGame()">START GAME</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-6 offset-md-3">
+                <button id="accelerateBtn" class="btn btn-secondary btn-block" onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-6 offset-md-3">
+                <button type="button" class="btn btn-success btn-block"  data-toggle="modal" data-target="#login">Login</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-6 offset-md-3">
+                <button type="button" class="btn btn-success btn-block"  data-toggle="modal" data-target="#daftar">Daftar</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-6 offset-md-3">
+                <div class="score"></div>
+            </div>
+        </div>
+    </div>
 
+ 
+
+   
+    <div class="modal fade" id="daftar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Daftar</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="post">
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">username</label>
+                  <input type="text" class="form-control" id="recipient-name" name="username">
+                </div>
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">password</label>
+                  <input type="text" class="form-control" id="recipient-name" name="password">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">nama</label>
+                    <input type="text" class="form-control" id="recipient-name" name="nama">
+                  </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+          </div>
+        </div>
+      </div>
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">username</label>
+            <input type="text" class="form-control" id="recipient-name" name="username">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">password</label>
+            <input type="text" class="form-control" id="recipient-name" name="password">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <input type="hidden" id="scoreInput" value="0">
+
+
+
+    
+
+
+<script>
+    document.getElementById('accelerateBtn').style.display = 'none'; 
+    var accelerating = false; // Variable untuk melacak apakah tombol akselerasi sedang ditekan
+
+document.addEventListener('keydown', function(event) {
+    if (event.code === 'Space') {
+        event.preventDefault(); // Mencegah perilaku default dari tombol Space
+        accelerate(-0.2); // Memanggil fungsi accelerate dengan nilai -0.2
+        accelerating = true; // Menandai bahwa tombol akselerasi sedang ditekan
+    }
+});
+
+document.addEventListener('keyup', function(event) {
+    if (event.code === 'Space') {
+        event.preventDefault(); // Mencegah perilaku default dari tombol Space
+        accelerate(0.05); // Memanggil fungsi accelerate dengan nilai 0.05
+        accelerating = false; // Menandai bahwa tombol akselerasi telah dilepas
+    }
+});
+
+function accelerate(n) {
+    if (accelerating) {
+        myGamePiece.gravity = n;
+    }
+}
 var myGamePiece;
 var myObstacles = [];
 var myScore;
+var gameStarted = false;
 
 function startGame() {
-    myGamePiece = new component(30, 30, "seana.jpg", 10, 120, "image");
-    myGamePiece.gravity = 0.05;
+    if (gameStarted) return; // Jika permainan sudah dimulai, hentikan fungsi
+    
+    gameStarted = true; // Set gameStarted menjadi true
+
+    myGamePiece = new component(40, 40, "ball.png", 20, 120, "image");
+    myGamePiece.gravity = 0;
     myScore = new component("30px", "Consolas", "red", 280, 40, "text");
     myGameArea.start();
+    document.getElementById('startButton').style.display = 'none'; // Sembunyikan tombol saat permainan dimulai
+    document.getElementById('accelerateBtn').style.display = 'inline'; // Sembunyikan tombol saat permainan dimulai
+    myScore.update(); // Memperbarui skor pada awal permainan
 }
 
 var myGameArea = {
-    canvas : document.createElement("canvas"),
+    canvas : document.querySelector("canvas"),
     start : function() {
         this.canvas.width = 480;
         this.canvas.height = 270;
@@ -46,12 +200,18 @@ function component(width, height, color, x, y, type) {
     this.y = y;
     this.gravity = 0;
     this.gravitySpeed = 0;
+    if (type == "image") {
+        this.image = new Image();
+        this.image.src = color;
+    }
     this.update = function() {
         ctx = myGameArea.context;
         if (this.type == "text") {
             ctx.font = this.width + " " + this.height;
             ctx.fillStyle = color;
             ctx.fillText(this.text, this.x, this.y);
+        } else if (this.type == "image") {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         } else {
             ctx.fillStyle = color;
             ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -88,11 +248,30 @@ function component(width, height, color, x, y, type) {
 }
 
 function updateGameArea() {
-    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+    
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
-            return;
-        } 
+    gameStarted = false;
+    document.getElementById('startButton').style.display = 'inline';
+    document.getElementById('accelerateBtn').style.display = 'none'; 
+    clearInterval(myGameArea.interval);
+    document.getElementById("scoreInput").value = myGameArea.frameNo;
+
+
+    // Tambahkan logika reset di sini
+    myGamePiece = null; // Menghapus objek permainan
+    myObstacles = [];   // Mengosongkan rintangan
+    myScore = null;     // Menghapus objek skor
+    myGameArea.clear(); // Menghapus area permainan
+    ctx.fillStyle = "black";
+ctx.font = "30px Consolas";
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+ctx.fillText("SCORE Anda : " + myGameArea.frameNo, myGameArea.canvas.width / 2, myGameArea.canvas.height / 2);
+
+    return;
+}
+
     }
     myGameArea.clear();
     myGameArea.frameNo += 1;
@@ -110,23 +289,31 @@ function updateGameArea() {
     for (i = 0; i < myObstacles.length; i += 1) {
         myObstacles[i].x += -1;
         myObstacles[i].update();
+        
     }
+    myObstacles.push(new component(myGameArea.canvas.width, 10, "green", 0, 0));
+    myObstacles.push(new component(myGameArea.canvas.width, 10, "green", 0, myGameArea.canvas.height - 10));
+
     myScore.text="SCORE: " + myGameArea.frameNo;
+    
     myScore.update();
     myGamePiece.newPos();
     myGamePiece.update();
+  
+
 }
 
 function everyinterval(n) {
     if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+    
     return false;
 }
 
 function accelerate(n) {
     myGamePiece.gravity = n;
 }
+
 </script>
-<br>
-<button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>
+
 </body>
 </html>
